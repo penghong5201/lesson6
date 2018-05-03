@@ -1,0 +1,154 @@
+body{
+    background: #fff;
+}
+.click-able{
+    cursor: pointer;
+}
+.clear-both{
+    clear: both;
+}
+.normal-hide{
+    display: none;
+}
+.inline-block{
+    display: inline-block;
+}
+#main-container{
+    /*margin-top: 45px;*/
+}
+.modal-footer{
+    text-align: center;
+}
+.float-container{
+    display: none;
+    position: fixed;
+    width: 70%;
+    max-width: 900px;
+    height: 70%;
+    max-height: 70%;
+    overflow-y: scroll;
+    background: #fff;
+    border: 1px solid #CCC;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+}
+.float-container .float-container-header button.close{
+    font-size: 32px;
+}
+.float-container .float-container-header .float-container-title{
+    color: #FFF;
+    font-size: 14px;
+    line-height: 38px;
+    text-align: center;
+}
+.form-actions {
+    background-color: transparent;
+}
+.float-container .float-container-content{
+}
+.cities-wrapper {
+    position: relative;
+    min-height: 34px;
+}
+.cities-display-container{
+    background: #fff;
+    float: left;
+    min-width: 220px;
+    overflow: auto;
+    max-height: 300px;
+    margin-top: 35px;
+    position: absolute;
+    display: none;
+    z-index: 9;
+}
+.cities-display-container .cdc-close-btn{
+    color: #E09E96;
+    cursor: pointer;
+}
+.cities-display-container .city-items > span{
+    margin: 2px;
+    padding: 1px;
+    background: #fff;
+    display: block;
+    cursor: pointer;
+}
+.cities-display-container .city-items > span:hover{
+    background: #eee;
+}
+.city-select-name-text{
+    float: left;
+    position: absolute;
+    z-index: 5;
+    min-width: 200px;
+    border-right: 0 !important;
+    left: 0;
+}
+.city-select{
+    position: absolute;
+    float: left;
+    display: inline-block;
+    width: auto;
+    min-width: 220px;
+    top: 0;
+    z-index: 2;
+}
+.area-navigation-container > a{
+    margin: 0 3px;
+}
+.area-navigation-container > a, .city-navigation-container > a{
+    display: inline-block;
+}
+.area-navigation-container > span, .city-navigation-container > span{
+    color: red;
+    display: inline-block;
+}
+.navable-a-tag:hover{
+    cursor: pointer;
+}
+#restaurant_selector_container .meal-container .well, #hotel_selector_container .hotelBreakfast-container .well {
+    background: white;
+}
+#restaurant_selector_container .meal-container .meal-price {
+    color: #6FB3E0;
+}
+#restaurant_selector_container .dataTables_wrapper > div.row{
+    display: none !important;
+}
+#hotel_selector_container .dataTables_wrapper > div.row{
+    display: block !important;
+}
+#hotel-select-table {
+    width: 100% !important;
+}
+#trip-navigator {
+    padding: 10px 0;
+}
+#trip-code-menu a{
+    margin-left: 14px;
+    padding: 0 14px 0 0;
+}
+#trip-code-menu span.origin-team-code{
+    display: block;
+    margin-top: -0.3em;
+}
+input.budget {
+    border-top:0;
+    border-left:0;
+    border-right: 0;
+}
+li.trip-top-menu-group .menu-icon{
+    display: inline-block !important;
+}
+.chosen-container {
+    max-width: 100%;
+}
+
+.ui-jqgrid-btable tr td:first-child {
+    padding: 0 !important;
+}
+.ui-jqgrid-btable tr td:first-child input.cbox, .ui-jqgrid-htable .ui-jqgrid-labels input.cbox{
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(1.5); /* IE */
+    -moz-transform: scale(1.5); /* FF */
+    -webkit-transform: scale(1.5); /* Safari and Chrome */
+    -o-transform: scale(1.5); /* Opera */
+}

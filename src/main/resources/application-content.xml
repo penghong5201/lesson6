@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:task="http://www.springframework.org/schema/task"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd  
+	http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+
+
+    http://www.springframework.org/schema/data/jpa
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"
+        default-autowire="byType">
+
+    <context:annotation-config/>
+    <context:property-placeholder ignore-unresolvable="true"
+            location="classpath:/datasource.properties"/>
+
+    <context:component-scan base-package="com.biz.lesson"/>
+
+
+    <!-- 引入datasource配置 -->
+    <import resource="classpath:application-datasource.xml"/>
+    <import resource="classpath:application-security.xml"/>
+
+
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+
+    <bean id="persistenceUnitManager"
+            class="org.springframework.data.jpa.support.MergingPersistenceUnitManager ">
+        <property name="persistenceXmlLocations">
+            <list value-type="java.lang.String">
+                <value>classpath*:META-INF/persistence.xml</value>
+            </list>
+        </property>
+        <property name="defaultDataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="entityManagerFactory"
+            class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="generateDdl" value="true"/>
+                <property name="showSql" value="false"/>
+            </bean>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.ejb.naming_strategy">
+                    org.hibernate.cfg.DefaultComponentSafeNamingStrategy
+                </prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+                <prop key="hibernate.cache.use_query_cache">false</prop>
+                <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                <prop key="hibernate.transaction.flush_before_completion">true</prop>
+                <!--
+                <prop key="hibernate.hbm2ddl.auto">validate | update | create | create-drop </prop>
+                -->
+            </props>
+        </property>
+        <property name="persistenceUnitManager" ref="persistenceUnitManager"/>
+        <property name="persistenceUnitName" value="lesson"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+            p:entityManagerFactory-ref="entityManagerFactory"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+    <jpa:repositories base-package="com.biz.lesson.dao" transaction-manager-ref="transactionManager"
+            entity-manager-factory-ref="entityManagerFactory"
+            factory-class="com.biz.lesson.dao.common.CommonRepositoryFactoryBean">
+    </jpa:repositories>
+
+
+    <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>
+    <task:scheduler id="qbScheduler" pool-size="1"/>
+
+    <!-- 配置异步事件 -->
+    <bean id="applicationEventMulticaster"
+            class="org.springframework.context.event.SimpleApplicationEventMulticaster">
+        <property name="taskExecutor">
+            <bean class="java.util.concurrent.Executors"
+                    factory-method="newSingleThreadExecutor"></bean>
+        </property>
+    </bean>
+
+    <bean id="passwordEncoder"
+            class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
+    <bean id="userDetailsManager" class="com.biz.lesson.business.user.UserManager"/>
+
+
+
+	<bean id="messageSource"
+	    class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	    <property name="defaultEncoding" value="UTF-8" />
+	    <property name="fallbackToSystemLocale" value="false" />
+	    <!-- 不抛出NoSuchMessageException, 使用messageKey作为返回值 -->
+	    <property name="useCodeAsDefaultMessage" value="true" />
+	    <property name="basenames">
+	        <list>
+	            <value>classpath:i18n/common</value>
+                <value>classpath:i18n/application</value>
+            </list>
+	    </property>
+	</bean>
+
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">  
+        <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>  
+        <!-- 如果不加默认到 使用classpath下的 ValidationMessages.properties -->  
+        <property name="validationMessageSource" ref="messageSource"/>  
+	</bean>
+
+
+    <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+    <bean class="com.biz.lesson.util.SpringContextUtil"/>
+   
+   
+   
+</beans>

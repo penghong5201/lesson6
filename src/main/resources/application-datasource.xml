@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd"
+        default-autowire="byType">
+
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+		<!-- 数据库基本信息配置 -->
+		<property name="url" value="${jdbc.url}" />
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="username" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.pass}" />
+
+		<property name="initialSize" value="${jdbc.initialPoolSize}" />
+		<property name="maxTotal" value="${jdbc.maxPoolSize}" />
+		<property name="minIdle" value="${jdbc.minPoolSize}" />
+		<property name="timeBetweenEvictionRunsMillis" value="3600000" />
+
+		<!-- 申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
+		<property name="testOnBorrow" value="true" />
+
+		<!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
+		<property name="testOnReturn" value="false" />
+
+		<!-- 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于 timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。 -->
+		<property name="testWhileIdle" value="true" />
+
+		<!-- 用来检测连接是否有效的sql，要求是一个查询语句,如果validationQuery为 null，testOnBorrow、testOnReturn、testWhileIdle都不起其作用。 -->
+		<property name="validationQuery" value="SELECT 1" />
+	</bean>
+
+	
+</beans>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Draggable + Sortable</title>
+
+  <style>
+  ul { list-style-type: none; margin: 0; padding: 0; margin-bottom: 10px;
+      border-width: 1px!important; border-color: #e0c4a4!important;}
+  li { margin: 5px; padding: 5px; width: 150px;
+      border-width: 1px!important; border-color: #00BE67!important; }
+  </style>
+    <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
+    <script src="assets/js/jquery-1.11.3.min.js"></script>
+
+    <script src="assets/js/jquery-ui.min.js"></script>
+  <script>
+  $( function() {
+    $( "#sortable" ).sortable({
+      revert: true,
+      stop: function(event, ui){
+         //console.log($(ui.draggable))
+
+      }
+    }).droppable({
+        drop: function(event, ui){
+         var el =$(ui.draggable);
+         var id = $(".ui-draggable-dragging").next().attr("id");
+
+         console.log(el.html()+"    "+ui.position.top+" "+ id)
+            var r=confirm("Press a button")
+            if (r==true)
+            {
+                el.html("123")
+            }
+            else
+            {
+
+            }
+
+
+      }
+    });
+    $( "#draggable" ).draggable({
+      connectToSortable: "#sortable",
+      helper: "clone",
+      revert: "invalid",
+
+    });
+    $( "ul, li" ).disableSelection();
+  } );
+  </script>
+</head>
+<body>
+ 
+<ul>
+  <li id="draggable" class="ui-state-highlight">Drag me down</li>
+</ul>
+ 
+<ul id="sortable">
+  <li id="1" class="ui-state-default">Item 1</li>
+  <li id="2" class="ui-state-default">Item 2</li>
+  <li id="3" class="ui-state-default">Item 3</li>
+  <li id="4" class="ui-state-default">Item 4</li>
+  <li id="5" class="ui-state-default">Item 5</li>
+</ul>
+ 
+ 
+</body>
+</html>
